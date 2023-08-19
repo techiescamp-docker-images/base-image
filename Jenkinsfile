@@ -18,7 +18,7 @@ pipeline {
             }
             steps {
                 dockerBuild(
-                    versionTag: "1.${BUILD_NUMBER}-${commitSHA}"
+                    versionTag: "1.${BUILD_NUMBER}-${commitSHA}",
                     imageName: "${REPO_NAME}:${versionTag}"
                 )
             }
