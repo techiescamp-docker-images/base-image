@@ -1,7 +1,9 @@
 @Library('jenkins-shared-library@main') _
 
 pipeline {
-    agent none  
+    agent{
+        label 'AGENT-01'
+    }
 
     stages {
     
@@ -10,7 +12,7 @@ pipeline {
                 docker {
                     image 'techiescamp/base-image:latest'
                     args '-v /var/run/docker.sock:/var/run/docker.sock --privileged '
-                    reuseNode true  
+                    reuseNode true
                 }
             }
             environment {
