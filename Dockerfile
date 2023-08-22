@@ -1,9 +1,12 @@
 FROM ubuntu:latest
 
 ENV DEBIAN_FRONTEND=noninteractive
+ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64
+ENV MAVEN_HOME /usr/share/maven
+ENV PATH $JAVA_HOME/bin:$MAVEN_HOME/bin:$PATH
 
 RUN apt-get update && \
-    apt-get install -y git apt-transport-https ca-certificates curl wget gnupg lsb-release software-properties-common && \
+    apt-get install -y git openjdk-17-jdk maven apt-transport-https ca-certificates curl wget gnupg lsb-release software-properties-common && \
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
     add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" && \
     apt-get install -y docker-ce

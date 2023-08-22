@@ -21,7 +21,7 @@ pipeline {
             steps {
                 dockerBuild(
                     versionTag: "1.0",
-                    imageName: "test-image"
+                    imageName: "base-image"
                 )
             }
         }
