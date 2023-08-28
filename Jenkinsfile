@@ -10,7 +10,7 @@ pipeline {
         stage('Build Docker Image') {
             agent {
                 docker {
-                    image '814200988517.dkr.ecr.us-west-2.amazonaws.com/docker-images:base-image'
+                    image 'techiescamp/base-image:latest'
                     args '-v /var/run/docker.sock:/var/run/docker.sock --privileged '
                     reuseNode true
                 }
