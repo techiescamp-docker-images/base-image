@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM ubuntu:20.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64
