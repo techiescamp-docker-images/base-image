@@ -1,5 +1,8 @@
 @Library('jenkins-shared-library@main') _
 
+def imageName = "terraform-image"
+def versionTag = "1.0.0"
+
 pipeline {
     agent{
         label 'AGENT-01'
@@ -7,22 +10,17 @@ pipeline {
 
     stages {
     
-        stage('Build Docker Image') {
-            agent {
-                docker {
-                    image '814200988517.dkr.ecr.us-west-2.amazonaws.com/docker-images:base-image'
-                    args '-v /var/run/docker.sock:/var/run/docker.sock --privileged '
-                    reuseNode true
-                }
-            }
-            environment {
-                DOCKER_CONFIG = '/tmp/docker'
-            }
+        stage('Run Trivy Scan') {
             steps {
-                dockerBuild(
-                    versionTag: "1.0",
-                    imageName: "base-image"
-                )
+                script {
+                    try {
+                        def imageNameAndTag = "${imageName}:${versionTag}"
+                        trivyScan(imageNameAndTag)
+                    } catch (Exception trivyError) {
+                        currentBuild.result = 'FAILURE'
+                        error("Trivy scan failed: ${trivyError}")
+                    }
+                }
             }
         }
     }
