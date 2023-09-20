@@ -1,4 +1,4 @@
-@Library('jenkins-shared-library@main') _
+@Library('jenkins-shared-library@develop') _
 
 def imageName = "terraform-image"
 def versionTag = "1.0.0"
