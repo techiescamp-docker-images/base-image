@@ -2,28 +2,19 @@
 FROM ubuntu:20.04
 
 # Set environment variables
-ENV M2_HOME=/opt/apache-maven-3.8.5
+ENV M2_HOME=/opt/apache-maven-3.9.4
 ENV PATH=$M2_HOME/bin:$PATH
+ENV DEBIAN_FRONTEND=noninteractive
 
 # Install required packages and clean up
 RUN apt-get update && \
-    apt-get install -y \
-    git \
-    openjdk-17-jdk \
-    curl \
-    wget \
-    lsb-release \
-    software-properties-common \
-    docker.io \
-    python3-pip && \
-    pip3 install awscli && \
-    apt-get clean && \
+    apt-get install -y --no-install-recommends git curl lsb-release gnupg wget openjdk-17-jdk docker.io python3-pip awscli && \
     rm -rf /var/lib/apt/lists/*
 
 # Install Maven
-RUN wget -q https://mirrors.estointernet.in/apache/maven/maven-3/3.8.5/binaries/apache-maven-3.8.5-bin.tar.gz -O /tmp/apache-maven-3.8.5-bin.tar.gz && \
-    tar -xf /tmp/apache-maven-3.8.5-bin.tar.gz -C /opt/ && \
-    rm /tmp/apache-maven-3.8.5-bin.tar.gz
+RUN wget -q https://dlcdn.apache.org/maven/maven-3/3.9.4/binaries/apache-maven-3.9.4-bin.tar.gz -O /tmp/apache-maven-3.9.4-bin.tar.gz && \
+    tar -xf /tmp/apache-maven-3.9.4-bin.tar.gz -C /opt/ && \
+    rm /tmp/apache-maven-3.9.4-bin.tar.gz
 
 # Install Trivy
 RUN wget -qO /tmp/trivy-pubkey.gpg https://aquasecurity.github.io/trivy-repo/deb/public.key && \
@@ -31,6 +22,7 @@ RUN wget -qO /tmp/trivy-pubkey.gpg https://aquasecurity.github.io/trivy-repo/deb
     echo "deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/trivy.list && \
     apt-get update && \
     apt-get install -y trivy && \
+    rm -rf /var/lib/apt/lists/* && \
     rm /tmp/trivy-pubkey.gpg
 
 # Install Hadolint
